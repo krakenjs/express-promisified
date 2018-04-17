@@ -45,7 +45,7 @@ export function server() : AppServerType {
                 }
             };
         },
-        use(middleware) {
+        use(middleware) : AppServerType {
             expressApp.use(async (req, res, next) => {
                 try {
                     await middleware(req, res);
@@ -54,6 +54,11 @@ export function server() : AppServerType {
                 }
                 return next();
             });
+            return appServer;
+        },
+        useCallback(middleware) : AppServerType {
+            expressApp.use(middleware);
+            return appServer;
         },
         emit(event) {
             expressApp.emit(event);
