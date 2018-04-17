@@ -21,28 +21,32 @@ export type AppServerType = {
 
 export function server() : AppServerType {
 
-    let app = express();
+    let expressApp = express();
+    let expressServer;
 
     const appServer : AppServerType = {
         EVENT,
         async close() : Promise<void> {
+            if (!expressServer) {
+                throw new Error(`Server not started`);
+            }
             await new Promise((resolve, reject) => {
-                return server.close(err => {
+                return expressServer.close(err => {
                     return err ? reject(err) : resolve();
                 });
             });
             appServer.emit(EVENT.SHUTDOWN);
         },
         on(event, handler) : Cancelable {
-            app.addListener(event, handler);
+            expressApp.addListener(event, handler);
             return {
                 cancel() {
-                    app.removeListener(event, handler);
+                    expressApp.removeListener(event, handler);
                 }
             };
         },
         use(middleware) {
-            app.use(async (req, res, next) => {
+            expressApp.use(async (req, res, next) => {
                 try {
                     await middleware(req, res);
                 } catch (err) {
@@ -52,11 +56,11 @@ export function server() : AppServerType {
             });
         },
         emit(event) {
-            app.emit(event);
+            expressApp.emit(event);
         },
         async listen({ port } : { port : number }) : Promise<void> {
             return await new Promise((resolve, reject) => {
-                let expressServer = app.listen(port, err => {
+                expressServer = expressApp.listen(port, err => {
                     if (err) {
                         return reject(err);
                     }
@@ -65,13 +69,13 @@ export function server() : AppServerType {
                     }
 
                     // $FlowFixMe
-                    console.log('[%s] Listening on http://localhost:%d', app.settings.env.toUpperCase(), port); // eslint-disable-line no-console
+                    console.log(`Listening on http://localhost:${ port }`); // eslint-disable-line no-console
                     return resolve(expressServer);
                 });
             });
         },
         get(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
-            app.get(async (req, res) => {
+            expressApp.get(async (req, res) => {
                 try {
                     await handler(req, res);
                 } catch (err) {
@@ -82,7 +86,7 @@ export function server() : AppServerType {
             return appServer;
         },
         post(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
-            app.post(async (req, res) => {
+            expressApp.post(async (req, res) => {
                 try {
                     await handler(req, res);
                 } catch (err) {
