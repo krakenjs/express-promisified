@@ -80,7 +80,7 @@ export function server() : AppServerType {
             });
         },
         get(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
-            expressApp.get(async (req, res) => {
+            expressApp.get(url, async (req, res) => {
                 try {
                     await handler(req, res);
                 } catch (err) {
@@ -91,7 +91,7 @@ export function server() : AppServerType {
             return appServer;
         },
         post(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
-            expressApp.post(async (req, res) => {
+            expressApp.post(url, async (req, res) => {
                 try {
                     await handler(req, res);
                 } catch (err) {
