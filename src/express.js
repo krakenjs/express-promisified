@@ -42,7 +42,14 @@ export function server() : AppServerType {
             };
         },
         use(middleware) {
-            app.use(middleware);
+            app.use(async (req, res, next) => {
+                try {
+                    await middleware(req, res);
+                } catch (err) {
+                    return next(err);
+                }
+                return next();
+            });
         },
         emit(event) {
             app.emit(event);
