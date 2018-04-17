@@ -15,7 +15,7 @@ export type AppServerType = {
     close : () => Promise<void>,
     on : (event : string, handler : () => void) => Cancelable,
     emit : (event : string) => void,
-    listen : (options : { port : number }) => Promise<void>,
+    listen : (options : { port : number }) => Promise<AppServerType>,
     get : (url : string, handler : (req : express$Request, res : express$Response) => Promise<void> | void) => AppServerType
 };
 
@@ -63,8 +63,8 @@ export function server() : AppServerType {
         emit(event) {
             expressApp.emit(event);
         },
-        async listen({ port } : { port : number }) : Promise<void> {
-            return await new Promise((resolve, reject) => {
+        async listen({ port } : { port : number }) : Promise<AppServerType> {
+            await new Promise((resolve, reject) => {
                 expressServer = expressApp.listen(port, err => {
                     if (err) {
                         return reject(err);
@@ -75,9 +75,11 @@ export function server() : AppServerType {
 
                     // $FlowFixMe
                     console.log(`Listening on http://localhost:${ port }`); // eslint-disable-line no-console
-                    return resolve(expressServer);
+                    return resolve();
                 });
             });
+
+            return appServer;
         },
         get(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
             expressApp.get(url, async (req, res) => {
