@@ -2,6 +2,9 @@
 
 import express from 'express';
 
+type ExpressRequest = express$Request; // eslint-disable-line no-undef
+type ExpressResponse = express$Response; // eslint-disable-line no-undef
+
 const EVENT = {
     SHUTDOWN: 'shutdown'
 };
@@ -16,7 +19,7 @@ export type AppServerType = {
     on : (event : string, handler : () => void) => Cancelable,
     emit : (event : string) => void,
     listen : (options : { port : number }) => Promise<AppServerType>,
-    get : (url : string, handler : (req : express$Request, res : express$Response) => Promise<void> | void) => AppServerType
+    get : (url : string, handler : (req : ExpressRequest, res : ExpressResponse) => Promise<void> | void) => AppServerType
 };
 
 export function server() : AppServerType {
@@ -81,7 +84,7 @@ export function server() : AppServerType {
 
             return appServer;
         },
-        get(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
+        get(url : string, handler : (ExpressRequest, ExpressResponse) => Promise<void> | void) : AppServerType {
             expressApp.get(url, async (req, res) => {
                 try {
                     await handler(req, res);
@@ -92,7 +95,7 @@ export function server() : AppServerType {
             });
             return appServer;
         },
-        post(url : string, handler : (express$Request, express$Response) => Promise<void> | void) : AppServerType {
+        post(url : string, handler : (ExpressRequest, ExpressResponse) => Promise<void> | void) : AppServerType {
             expressApp.post(url, async (req, res) => {
                 try {
                     await handler(req, res);
