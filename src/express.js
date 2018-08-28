@@ -59,8 +59,8 @@ export function server() : AppServerType {
             });
             return appServer;
         },
-        useCallback(middleware) : AppServerType {
-            expressApp.use(middleware);
+        useCallback() : AppServerType {
+            expressApp.use.apply(expressApp, arguments);
             return appServer;
         },
         emit(event) {
