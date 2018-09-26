@@ -1,6 +1,6 @@
 {
   "name": "express-promisified",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Express with promises",
   "main": "index.js",
   "scripts": {
