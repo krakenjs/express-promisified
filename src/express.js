@@ -27,6 +27,8 @@ export function server() : AppServerType {
     let expressApp = express();
     let expressServer;
 
+    let shutdownListeners = [];
+
     const appServer : AppServerType = {
         EVENT,
         async close() : Promise<void> {
@@ -38,13 +40,23 @@ export function server() : AppServerType {
                     return err ? reject(err) : resolve();
                 });
             });
-            appServer.emit(EVENT.SHUTDOWN);
+            for (let handler of shutdownListeners) {
+                await handler();
+            }
         },
         on(event, handler) : Cancelable {
             expressApp.addListener(event, handler);
             return {
                 cancel() {
                     expressApp.removeListener(event, handler);
+                }
+            };
+        },
+        onShutdown(handler) : Cancelable {
+            shutdownListeners.push(handler);
+            return {
+                cancel() {
+                    shutdownListeners.splice(shutdownListeners.indexOf(handler), 1);
                 }
             };
         },
