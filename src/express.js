@@ -1,6 +1,7 @@
 /* @flow */
 
 import express from 'express';
+import https from 'https'
 
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
@@ -81,6 +82,30 @@ export function server() : AppServerType {
         async listen({ port } : { port : number }) : Promise<AppServerType> {
             await new Promise((resolve, reject) => {
                 expressServer = expressApp.listen(port, err => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    if (!expressServer) {
+                        return reject(new Error('No server found'));
+                    }
+
+                    // $FlowFixMe
+                    console.log(`Listening on http://localhost:${ port }`); // eslint-disable-line no-console
+                    return resolve();
+                });
+            });
+
+            return appServer;
+        },
+        async listenHTTPS({ port, privateKey, certificate } : { port : number, privateKey: string, certificate: string }) : Promise<AppServerType> {
+            await new Promise((resolve, reject) => {
+                expressServer = https.createServer(
+                    {
+                        key: privateKey,
+                        cert: certificate
+                    },
+                    expressApp
+                ).listen(port, err => {
                     if (err) {
                         return reject(err);
                     }
