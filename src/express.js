@@ -29,16 +29,20 @@ export function server() : AppServerType {
     let expressApp = express();
     let expressServer;
 
+    let getExpressServer = () => {
+        if (!expressServer) {
+            throw new Error(`Server not started`);
+        }
+        return expressServer;
+    };
+
     let shutdownListeners = [];
 
     const appServer : AppServerType = {
         EVENT,
         async close() : Promise<void> {
-            if (!expressServer) {
-                throw new Error(`Server not started`);
-            }
             await new Promise((resolve, reject) => {
-                return expressServer.close(err => {
+                return getExpressServer().close(err => {
                     return err ? reject(err) : resolve();
                 });
             });
@@ -63,6 +67,7 @@ export function server() : AppServerType {
             };
         },
         use(middleware) : AppServerType {
+            // $FlowFixMe
             expressApp.use(async (req, res, next) => {
                 try {
                     await middleware(req, res);
@@ -123,6 +128,7 @@ export function server() : AppServerType {
             return appServer;
         },
         get(url : string, handler : (ExpressRequest, ExpressResponse) => Promise<void> | void) : AppServerType {
+            // $FlowFixMe
             expressApp.get(url, async (req, res) => {
                 try {
                     await handler(req, res);
@@ -134,6 +140,7 @@ export function server() : AppServerType {
             return appServer;
         },
         post(url : string, handler : (ExpressRequest, ExpressResponse) => Promise<void> | void) : AppServerType {
+            // $FlowFixMe
             expressApp.post(url, async (req, res) => {
                 try {
                     await handler(req, res);
