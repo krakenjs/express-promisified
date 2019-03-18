@@ -1,7 +1,8 @@
 /* @flow */
 
+import https from 'https';
+
 import express from 'express';
-import https from 'https'
 
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
@@ -101,7 +102,7 @@ export function server() : AppServerType {
             await new Promise((resolve, reject) => {
                 expressServer = https.createServer(
                     {
-                        key: privateKey,
+                        key:  privateKey,
                         cert: certificate
                     },
                     expressApp
