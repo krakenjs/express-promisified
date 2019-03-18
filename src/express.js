@@ -97,7 +97,7 @@ export function server() : AppServerType {
 
             return appServer;
         },
-        async listenHTTPS({ port, privateKey, certificate } : { port : number, privateKey: string, certificate: string }) : Promise<AppServerType> {
+        async listenHTTPS({ port, privateKey, certificate } : { port : number, privateKey : string, certificate : string }) : Promise<AppServerType> {
             await new Promise((resolve, reject) => {
                 expressServer = https.createServer(
                     {
@@ -114,7 +114,7 @@ export function server() : AppServerType {
                     }
 
                     // $FlowFixMe
-                    console.log(`Listening on http://localhost:${ port }`); // eslint-disable-line no-console
+                    console.log(`Listening on https://localhost:${ port }`); // eslint-disable-line no-console
                     return resolve();
                 });
             });
