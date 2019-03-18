@@ -2,7 +2,7 @@
 
 import https from 'https';
 
-import express from 'express'; // eslint-disable-line import/no-unresolved
+import express from 'express';
 
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
