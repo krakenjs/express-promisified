@@ -1,5 +1,5 @@
 {
-  "name": "express-promisified",
+  "name": "@krakenjs/express-promisified",
   "version": "1.0.10",
   "description": "Express with promises",
   "main": "index.js",
