@@ -27,9 +27,9 @@
   "author": "dbrain",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/krakenjs/subprocess-robot/issues"
+    "url": "https://github.com/krakenjs/express-promisified/issues"
   },
-  "homepage": "https://github.com/krakenjs/subprocess-robot#readme",
+  "homepage": "https://github.com/krakenjs/express-promisified#readme",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "flow-bin": "^0.69.0",
