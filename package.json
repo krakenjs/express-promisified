@@ -31,9 +31,9 @@
   },
   "homepage": "https://github.com/krakenjs/express-promisified#readme",
   "devDependencies": {
+    "@krakenjs/grumbler-scripts": "^6.0.2",
     "@types/express": "^4.17.13",
     "flow-bin": "^0.69.0",
-    "grumbler-scripts": "^5.0.0",
     "in-publish": "^2.0.1",
     "tsd": "^0.19.1",
     "yargs-parser": "^10.0.0"
