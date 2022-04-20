@@ -8,12 +8,15 @@
     "flow-typed": "flow-typed install",
     "flow:build": "flow gen-flow-files ./src/index.js --out-dir ./src",
     "babel": "babel ./src --ignore=node_modules --out-dir ./src --source-maps inline",
-    "test": "npm run flow-typed && npm run lint && npm run flow && npm run tsd",
+    "test": "npm run format:check && npm run flow-typed && npm run lint && npm run flow && npm run tsd",
     "tsd": "tsd",
     "flow": "flow",
+    "format": "prettier --write --ignore-unknown .",
+    "format:check": "prettier --check .",
     "lint": "eslint src/ *.js",
     "prepublish": "in-publish && npm run babel || not-in-publish",
-    "postpublish": "git checkout ./src"
+    "postpublish": "git checkout ./src",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -31,14 +34,20 @@
   },
   "homepage": "https://github.com/krakenjs/express-promisified#readme",
   "devDependencies": {
-    "@krakenjs/grumbler-scripts": "^6.0.2",
+    "@krakenjs/grumbler-scripts": "^7.0.0-alpha.1",
     "@types/express": "^4.17.13",
     "flow-bin": "^0.69.0",
+    "husky": "^7.0.4",
     "in-publish": "^2.0.1",
+    "lint-staged": "^12.4.0",
+    "prettier": "^2.6.2",
     "tsd": "^0.19.1",
     "yargs-parser": "^10.0.0"
   },
   "peerDependencies": {
     "express": "^4"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   }
 }

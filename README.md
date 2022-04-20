@@ -1,5 +1,4 @@
-express-promisified
--------------------
+## express-promisified
 
 Express with promises
 
