@@ -1,6 +1,12 @@
 express-promisified
 -------------------
 
+## ⚠️  Deprecated Package
+
+There is no planned maintenance or updates to this repo. Please utilizie [express@5](https://expressjs.com/en/guide/migrating-5.html)
+
+## Overview
+
 Express with promises
 
 ### HTTPS Support
